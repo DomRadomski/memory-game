@@ -2,6 +2,8 @@
 
 A browser-based memory card game built with React, using the [PokéAPI](https://pokeapi.co/) to fetch real Pokémon data.
 
+[View here](https://memory-game-tau-livid-38.vercel.app/)
+
 ## What it does
 
 Click each Pokémon card without clicking the same one twice. Every successful click increments your score. Click a duplicate and your score resets — but your best score is saved.
