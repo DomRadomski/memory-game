@@ -9,6 +9,8 @@ function App() {
   let [score, setScore] = useState(0)
   let [bestscore, setBestscore] = useState(0)
 
+  let [showRules, setShowrules] = useState(false)
+
   let [pokemon, setPokemon] = useState([
     {name: 'chimchar', imgurl: null, clicked: false},
     {name: 'piplup', imgurl: null, clicked: false},
@@ -72,18 +74,22 @@ function App() {
 
   return (
     <div className='memory-game'>
-      <Header score={score} bestscore={bestscore}/>
-      <Pokegrid pokemon={pokemon} handleClick={handleClick}/>
+      <Header score={score} bestscore={bestscore} showRules={showRules} setShowrules={setShowrules}/>
+      {
+      showRules 
+      ? <Rules/> 
+      : <Pokegrid pokemon={pokemon} handleClick={handleClick}/>
+      }
     </div>
   )
 }
 
 export default App
 
-function Header({ score, bestscore }) {
+function Header({ score, bestscore, showRules, setShowrules }) {
   return (
     <div className='header'>
-      <button>Rules</button>
+      <button onClick={() => setShowrules(!showRules)}>Rules</button>
       <h1>Pokemon Memory Game</h1>
       <Counter score={score} bestscore={bestscore}/>
     </div>
@@ -95,6 +101,18 @@ function Counter({ score, bestscore }) {
     <div className='score'>
       <span>Current Score: {score} </span>
       <span>Best Score: {bestscore} </span>
+    </div>
+  )
+}
+
+function Rules() {
+  return (
+    <div className='rules'>
+      <h2>Welcome to the Pokemon Memory Game!</h2>
+      <ol>
+        <li>Do not click the same Pokemon twice...</li>
+      </ol>
+      <p>Good luck!!!</p>
     </div>
   )
 }
