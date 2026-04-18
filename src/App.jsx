@@ -9,41 +9,6 @@ function App() {
   let [score, setScore] = useState(0)
   let [bestscore, setBestscore] = useState(0)
 
-  const handleClick = () => {
-    console.log(`${p.name}, ${p.clicked}`); p.clicked = true;
-  }
-
-  return (
-    <div className='memory-game'>
-      <Header score={score} bestscore={bestscore}/>
-      <Pokegrid handleClick={handleClick}/>
-    </div>
-  )
-}
-
-export default App
-
-function Header({ score, bestscore }) {
-  return (
-    <div className='header'>
-      <button>Rules</button>
-      <h1>Pokemon Memory Game</h1>
-      <Counter score={score} bestscore={bestscore}/>
-    </div>
-  )
-}
-
-function Counter({ score, bestscore }) {
-  return (
-    <div className='score'>
-      <span>Current Score: {score} </span>
-      <span>Best Score: {bestscore} </span>
-    </div>
-  )
-}
-
-function Pokegrid({ handleClick }) {
-
   let [pokemon, setPokemon] = useState([
     {name: 'chimchar', imgurl: null, clicked: false},
     {name: 'piplup', imgurl: null, clicked: false},
@@ -70,10 +35,76 @@ function Pokegrid({ handleClick }) {
     })
   },[])
 
+  function shuffle(arr) {
+    let currentIndex = arr.length;
+
+    // While there remain elements to shuffle...
+    while (currentIndex != 0) {
+
+      // Pick a remaining element...
+      let randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+
+      // And swap it with the current element.
+      [arr[currentIndex], arr[randomIndex]] = [arr[randomIndex], arr[currentIndex]];
+    }
+
+    return arr;
+  }
+
+  function handleClick(p) {
+    setPokemon(shuffle([...pokemon]))
+    if (!p.clicked) {
+      setPokemon(prev => prev.map(entry =>
+        entry.name === p.name
+          ? { ...entry, clicked: true }
+          : entry
+      ))
+      setScore(score + 1)
+
+    } else {
+        if (score > bestscore) setBestscore(score);
+        setScore(0)
+        setPokemon(prev => prev.map(entry => ({ ...entry, clicked: false })))
+    }  
+  }  
+  
+
+  return (
+    <div className='memory-game'>
+      <Header score={score} bestscore={bestscore}/>
+      <Pokegrid pokemon={pokemon} handleClick={handleClick}/>
+    </div>
+  )
+}
+
+export default App
+
+function Header({ score, bestscore }) {
+  return (
+    <div className='header'>
+      <button>Rules</button>
+      <h1>Pokemon Memory Game</h1>
+      <Counter score={score} bestscore={bestscore}/>
+    </div>
+  )
+}
+
+function Counter({ score, bestscore }) {
+  return (
+    <div className='score'>
+      <span>Current Score: {score} </span>
+      <span>Best Score: {bestscore} </span>
+    </div>
+  )
+}
+
+function Pokegrid({ pokemon, handleClick }) {
+
   return (
     <div className='pokegrid'>
       {pokemon.map(p => (
-        <Pokemon key={p.name} name={p.name} imgurl={p.imgurl} onClick={handleClick}/>
+        <Pokemon key={p.name} name={p.name} imgurl={p.imgurl} handleClick={() => handleClick(p)}/>
       ))}
     </div>
   )
