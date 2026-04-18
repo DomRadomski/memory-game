@@ -1,16 +1,30 @@
-# React + Vite
+# Pokemon Memory Game
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A browser-based memory card game built with React, using the [PokéAPI](https://pokeapi.co/) to fetch real Pokémon data.
 
-Currently, two official plugins are available:
+## What it does
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Click each Pokémon card without clicking the same one twice. Every successful click increments your score. Click a duplicate and your score resets — but your best score is saved.
 
-## React Compiler
+## Purpose
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+This project was built to consolidate core React concepts learned so far:
 
-## Expanding the ESLint configuration
+- **useState** — managing game state including scores, the Pokémon array, and UI toggles like the rules panel
+- **useEffect** — fetching Pokémon data from the PokéAPI on mount, with async `.then()` chains updating state as each request resolves
+- **Lifting state up** — `score`, `bestscore`, and the Pokémon array live in the top-level `App` component and are passed down as props, keeping the source of truth in one place
+- **Complex state** — each Pokémon is an object `{ name, imgurl, clicked }` inside an array; updating a single field requires mapping over the full array and spreading the changed entry, rather than mutating directly
+- **Props and component composition** — the UI is broken into `App`, `Header`, `Counter`, `Pokegrid`, `Pokemon`, and `Rules` components, each with a focused responsibility
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Stack
+
+- React (with hooks)
+- PokéAPI — `https://pokeapi.co/api/v2/pokemon/:name`
+- Vanilla CSS with media queries for responsiveness
+
+## Running locally
+
+```bash
+npm install
+npm run dev
+```
